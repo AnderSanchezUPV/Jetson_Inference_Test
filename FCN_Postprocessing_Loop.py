@@ -53,13 +53,13 @@ else:
 
 ##  Definir parametros de la Inferencia
 print("Definir modelo y entorno de ejecucion")
-Model_path="Modelos/FCN_ResNet50/fcn-resnet50-11.onnx "
-
-# ort_session = ort.InferenceSession(Model_path,
-#                                     providers=["CUDAExecutionProvider"])
+Model_path="Modelos/FCN_ResNet50/fcn-resnet50-11.onnx"
 
 ort_session = ort.InferenceSession(Model_path,
-                                    providers=["CPUExecutionProvider"])
+                                     providers=["CUDAExecutionProvider"])
+
+#ort_session = ort.InferenceSession(Model_path,
+#                                    providers=["CPUExecutionProvider"])
 print("Lazo principal")
 print("####################################")
 while True:
