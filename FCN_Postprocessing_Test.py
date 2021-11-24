@@ -49,7 +49,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 ##  Cargar Modelo
-Model_path="Modelos/Onnx/FCN_ResNet50/fcn-resnet50-11.onnx"
+Model_path="Modelos/FCN_ResNet50/fcn-resnet50-11.onnx"
 
 # ort_session = ort.InferenceSession(Model_path,
 #                                     providers=["CUDAExecutionProvider"])

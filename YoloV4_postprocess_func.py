@@ -146,7 +146,7 @@ def read_class_names(class_file_name):
             names[ID] = name.strip('\n')
     return names
 
-def draw_bbox(image, bboxes, classes=read_class_names("Modelos/Onnx/YoloV4/coco_names.txt"),
+def draw_bbox(image, bboxes, classes=read_class_names("Modelos/YoloV4/coco_names.txt"),
               show_label=True):
     """
     bboxes: [x_min, y_min, x_max, y_max, probability, cls_id] format coordinates.

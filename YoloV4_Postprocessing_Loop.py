@@ -58,7 +58,7 @@ print("Inicializando Programa")
 
 ##  Definir parametros para el Para el Postprocesado
 print("Definir parametros de postprocesado")
-ANCHORS = "Modelos/Onnx/YoloV4/yoloV4_anchors.txt"
+ANCHORS = "Modelos/YoloV4/yoloV4_anchors.txt"
 STRIDES = [8, 16, 32]
 XYSCALE = [1.2, 1.1, 1.05]
 
@@ -87,7 +87,7 @@ lineThickness          = 1
 
 ##  Definir parametros de la Inferencia
 print("Definir modelo y entorno de ejecucion")
-Model_path="Modelos/Onnx/YoloV4/yolov4.onnx"
+Model_path="Modelos/YoloV4/yolov4.onnx"
 sess = ort.InferenceSession(Model_path,
                             providers=["CUDAExecutionProvider"])
 # sess = ort.InferenceSession(Model_path,

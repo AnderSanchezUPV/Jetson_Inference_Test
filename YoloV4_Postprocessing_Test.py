@@ -77,7 +77,7 @@ cv2.destroyAllWindows()
 
 ##  Inferencia
 
-Model_path="Modelos/Onnx/YoloV4/yolov4.onnx"
+Model_path="Modelos/YoloV4/yolov4.onnx"
 sess = ort.InferenceSession(Model_path,
                             providers=["CUDAExecutionProvider"])
 model_start=time.time()
@@ -91,7 +91,7 @@ print("Output shape:", list(map(lambda detection: detection.shape, detections)))
 ##  PostProcesar Imagen
 
 #   Las funciones de postprocesado se importan desde: YoloV4_postprocess_func
-ANCHORS = "Modelos/Onnx/YoloV4/yoloV4_anchors.txt"
+ANCHORS = "Modelos/YoloV4/yoloV4_anchors.txt"
 STRIDES = [8, 16, 32]
 XYSCALE = [1.2, 1.1, 1.05]
 

@@ -9,7 +9,7 @@ from PIL import Image
 from matplotlib.colors import hsv_to_rgb
 import cv2
 
-classes = [line.rstrip('\n') for line in open('Modelos/Onnx/FCN_ResNet50/voc_classes.txt')]
+classes = [line.rstrip('\n') for line in open('Modelos/FCN_ResNet50/voc_classes.txt')]
 num_classes = len(classes)
 
 def get_palette():
