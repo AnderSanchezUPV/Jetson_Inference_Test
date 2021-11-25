@@ -25,14 +25,7 @@ import onnxruntime as ort
 
 from YoloV4_postprocess_func import *
 
-# import os
 
-# from matplotlib.pyplot import imshow
-# from matplotlib import pyplot as plt
-
-# from scipy import special
-# import colorsys
-# import random
 
 
 ##  Definicion de funciones
