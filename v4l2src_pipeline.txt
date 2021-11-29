@@ -1,0 +1,1 @@
+gst-launch-1.0 v4l2src ! jpegdec ! video/x-raw, width=640, height=480 ! xvimagesink
