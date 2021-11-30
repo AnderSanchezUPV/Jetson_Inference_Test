@@ -11,6 +11,8 @@ Comprobar la tasa maxima de fps en la Jetson Xavier
 import cv2
 import os
 import time
+import numpy as np
+import matplotlib.pyplot as plt
 
 ##  Definir objeto de la camara
 print("Generar Objeto de la camara")
@@ -32,16 +34,22 @@ fontScale              =  0.4
 fontColor              = (255,255,255)
 lineThickness          = 1
 
-
+time_array=np.array(0)
 while True:
     try:
         Camera_start_time=time.time()
         
         #Capturar imagen Desde camara 
         
-        cv_flag ,image = cam.read() 
+        cv_flag ,image = cam.read()
         
-        camera_end_time =time.time()-Camera_start_time;
+        time.sleep(0.005)
+        
+        camera_end_time =time.time()-Camera_start_time-0.005;
+        
+        time_array=np.append(time_array,camera_end_time*1000)
+        
+        print('Tiempo de toma de imagen: {:.2f}'.format(camera_end_time*1000))
         
         image_text='Tasa de FPS: {:.2f}'.format(1/camera_end_time)
         
@@ -64,8 +72,11 @@ while True:
         cv2.destroyAllWindows()
         print("Excepcion!!!")
         break
-    
+
+
 ##  Finalizarla Ejecucion del programa
 cam.release()
 cv2.destroyAllWindows()
-   
+
+##  Plot de los tiempos de ejecucion
+plt.plot(time_array[2:time_array.size])
