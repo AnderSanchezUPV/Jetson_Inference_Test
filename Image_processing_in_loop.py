@@ -58,20 +58,10 @@ def preprocess_pil(img):
 
 ##  hook event handleer del teclado
 stop = False
-# def onkeypress(event):
-#     global stop
-#     if event.name == 'space':
-#         stop = True
-#         cam.release()
-#         cv2.destroyAllWindows()
-#         print('Programa finalizado')
 
-# # ---------> hook event handler
-# keyboard.on_press(onkeypress)
-# # --------->
 
 ##  Obtener lsita de etiquetas de Imagenet
-text_file = open("imagenet1000_clsidx_to_labels.txt", "r")
+text_file = open("Modelos\resnet50v2\imagenet1000_clsidx_to_labels.txt", "r")
 Img_net_labels = text_file.read().splitlines()
 text_file.close()
 
@@ -90,10 +80,10 @@ lineThickness          = 1
 idx=1;
 current_tic=time.time()
 ##  Definir Modelo neuronal
-ort_session = ort.InferenceSession("Modelos/Onnx/resnet50v2/resnet50-v2-7.onnx",
-                                      providers=["CPUExecutionProvider"])
-# ort_session = ort.InferenceSession("Modelos/Onnx/resnet50v2/resnet50-v2-7.onnx",
-#                                       providers=["CUDAExecutionProvider"])
+#ort_session = ort.InferenceSession("Modelos/resnet50v2/resnet50-v2-7.onnx",
+#                                      providers=["CPUExecutionProvider"])
+ort_session = ort.InferenceSession("Modelos/resnet50v2/resnet50-v2-7.onnx",
+                                       providers=["CUDAExecutionProvider"])
 ## Main loop
 print('Main Loop')
 while not(stop):   
