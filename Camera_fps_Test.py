@@ -17,13 +17,17 @@ print("Generar Objeto de la camara")
 if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
 elif os.name =='posix':
-    cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    #cam = cv2.VideoCapture(0,cv2.CAP_GSTREAMER) # Linux
+    #cam = cv2.VideoCapture('/dev/video0',cv2.CAP_V4L) 
+    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
+    
+    
 else:
     print("Error al crear objeto de la camara")  
     
     # Definir la resolucion de la camara (Variable)
-cam.set(cv2.CAP_PROP_FRAME_WIDTH,640)
-cam.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
+#cam.set(cv2.CAP_PROP_FRAME_WIDTH,640)
+#cam.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
 
 ## Propiedades del texto en pantalla
 font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -39,8 +43,11 @@ while True:
         
         #Capturar imagen Desde camara 
         
-        cv_flag ,image = cam.read() 
-        
+        cv_flag ,image = cam.read()
+        if cv_flag==False:
+            print('Fallo al leer la imagen ## cv_flag==False ##')
+            break
+
         camera_end_time =time.time()-Camera_start_time;
         
         image_text='Tasa de FPS: {:.2f}'.format(1/camera_end_time)
