@@ -46,13 +46,13 @@ while True:
         #Capturar imagen Desde camara 
         
         cv_flag ,image = cam.read()
-<<<<<<< HEAD
+
         if cv_flag==False:
             print('Fallo al leer la imagen ## cv_flag==False ##')
             break
 
         camera_end_time =time.time()-Camera_start_time;
-=======
+
         
         time.sleep(0.005)
         
@@ -61,7 +61,7 @@ while True:
         time_array=np.append(time_array,camera_end_time*1000)
         
         print('Tiempo de toma de imagen: {:.2f}'.format(camera_end_time*1000))
->>>>>>> 1445792609e6526658bdd1616e6673d9ee991134
+
         
         image_text='Tasa de FPS: {:.2f}'.format(1/camera_end_time)
         
@@ -89,10 +89,8 @@ while True:
 ##  Finalizarla Ejecucion del programa
 cam.release()
 cv2.destroyAllWindows()
-<<<<<<< HEAD
-   
-=======
+
 
 ##  Plot de los tiempos de ejecucion
 plt.plot(time_array[2:time_array.size])
->>>>>>> 1445792609e6526658bdd1616e6673d9ee991134
+
