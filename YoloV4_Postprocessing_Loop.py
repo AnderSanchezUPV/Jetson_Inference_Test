@@ -63,13 +63,14 @@ print("Generar Objeto de la camara")
 if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
 elif os.name =='posix':
-    cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    #cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
 else:
     print("Error al crear objeto de la camara")  
     
     # Definir la resolucion de la camara (Variable)
-cam.set(cv2.CAP_PROP_FRAME_WIDTH,640)
-cam.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
+#cam.set(cv2.CAP_PROP_FRAME_WIDTH,640)
+#cam.set(cv2.CAP_PROP_FRAME_HEIGHT,480)
 
 ## Propiedades del texto en pantalla
 font                   = cv2.FONT_HERSHEY_SIMPLEX
@@ -83,7 +84,7 @@ print("Definir modelo y entorno de ejecucion")
 Model_path="Modelos/YoloV4/yolov4.onnx"
 sess = ort.InferenceSession(Model_path,
                             providers=["CUDAExecutionProvider"])
-# sess = ort.InferenceSession(Model_path,
+#sess = ort.InferenceSession(Model_path,
 #                             providers=["CPUExecutionProvider"])
 print("Lazo principal")
 print("####################################")
@@ -91,7 +92,7 @@ while True:
     try:
         model_start=time.time()
         #Capturar imagen Desde camara 
-        # print("Tomar Imagen")
+        #print("Tomar Imagen")
         cv_flag ,original_image = cam.read() 
         
         if not(cv_flag):
@@ -101,7 +102,7 @@ while True:
             break
            
         ##  Preprocesar Imagen
-        # print("Preprocesar Imagen")
+        #print("Preprocesar Imagen")
        
         
         # original_image_size = original_image.shape[:2]
@@ -115,7 +116,7 @@ while True:
         
         
         ##  Inferencia    
-        # print("Inferencia")
+        #print("Inferencia")
         Inference_start=time.time()
         outputs = sess.get_outputs()
         output_names = list(map(lambda output: output.name, outputs))
@@ -126,7 +127,7 @@ while True:
         Inference_end=time.time()-Inference_start
         
         ##  PostProcesar Imagen
-        # print("Postprocesar Imagen")
+        #print("Postprocesar Imagen")
         #   Las funciones de postprocesado se importan desde: YoloV4_postprocess_func
         
         pred_bbox = postprocess_bbbox(detections, ANCHORS, STRIDES, XYSCALE)
@@ -135,9 +136,9 @@ while True:
         image = draw_bbox(original_image, bboxes)  
         
         model_end=time.time()-model_start
-        # print("Tiempo de inferencia {:.4f} ms".format(model_end*1000))
+        #print("Tiempo de inferencia {:.4f} ms".format(model_end*1000))
         ##  Mostrar Resultado
-        # print("Mostrar Imagen")
+        #print("Mostrar Imagen")
         image_text='Tiempo de Inferencia: {:.2f} ms'.format(model_end*1000)
         
         image=cv2.putText(image,image_text,

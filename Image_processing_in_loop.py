@@ -15,6 +15,7 @@ Se muestra por pantalla la clase mas relevante detectada por la red.
 #get_ipython().magic('reset -sf')
 
 ## Importar librerias
+import os
 import cv2 
 import time
 import torch
@@ -26,7 +27,6 @@ import numpy as np
 from PIL import Image
 
 
-import keyboard
 
 ##  Definiciones
 def to_numpy(tensor):
@@ -61,13 +61,20 @@ stop = False
 
 
 ##  Obtener lsita de etiquetas de Imagenet
-text_file = open("Modelos\resnet50v2\imagenet1000_clsidx_to_labels.txt", "r")
+text_file = open("Modelos/resnet50v2/imagenet1000_clsidx_to_labels.txt", "r")
 Img_net_labels = text_file.read().splitlines()
 text_file.close()
 
-##  Crear objeto de la camara
-cam = cv2.VideoCapture(0)  
-# cv2.namedWindow('cam-test')
+##  Crear objeto de la camara 
+print("Generar Objeto de la camara")
+if os.name=='nt':
+    cam = cv2.VideoCapture(0)   # Windows
+elif os.name =='posix':
+    #cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER) # Jetson
+    
+else:
+    print("Error al crear objeto de la camara")  
 
 ## Propiedades del texto en pantalla
 font                   = cv2.FONT_HERSHEY_SIMPLEX
