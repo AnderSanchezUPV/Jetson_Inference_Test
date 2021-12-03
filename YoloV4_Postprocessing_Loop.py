@@ -18,6 +18,7 @@ import time
 import os
 
 import cv2
+from numpy.lib.stride_tricks import DummyArray
 
 # import onnx
 import onnxruntime as ort
@@ -63,8 +64,10 @@ print("Generar Objeto de la camara")
 if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
 elif os.name =='posix':
-    #cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
-    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
+    cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    cam.set(cv2.CV_CAP_PROP_BUFFERSIZE, 1)
+    #cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
+    #cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
 else:
     print("Error al crear objeto de la camara")  
     
@@ -86,6 +89,16 @@ sess = ort.InferenceSession(Model_path,
                             providers=["CUDAExecutionProvider"])
 #sess = ort.InferenceSession(Model_path,
 #                             providers=["CPUExecutionProvider"])
+
+outputs = sess.get_outputs()
+output_names = list(map(lambda output: output.name, outputs))
+input_name = sess.get_inputs()[0].name
+
+##  Dummy Inference
+_dummyImg=np.zeros((416,416,3),dtype=np.float32)
+_dummyImg=np.expand_dims(_dummyImg,0)
+sess.run(output_names, {input_name: _dummyImg})
+
 print("Lazo principal")
 print("####################################")
 while True:
@@ -118,10 +131,7 @@ while True:
         ##  Inferencia    
         #print("Inferencia")
         Inference_start=time.time()
-        outputs = sess.get_outputs()
-        output_names = list(map(lambda output: output.name, outputs))
-        input_name = sess.get_inputs()[0].name
-        
+                
         detections = sess.run(output_names, {input_name: image_data})
         #print("Output shape:", list(map(lambda detection: detection.shape, detections)))
         Inference_end=time.time()-Inference_start
@@ -136,10 +146,11 @@ while True:
         image = draw_bbox(original_image, bboxes)  
         
         model_end=time.time()-model_start
+
         #print("Tiempo de inferencia {:.4f} ms".format(model_end*1000))
         ##  Mostrar Resultado
         #print("Mostrar Imagen")
-        image_text='Tiempo de Inferencia: {:.2f} ms'.format(model_end*1000)
+        image_text='Tiempo de Inferencia: {:.2f} ms   Tasa de FP: {:.2f}: '.format(Inference_end*1000,1/model_end)
         
         image=cv2.putText(image,image_text,
                     bottomLeftCornerOfText, 

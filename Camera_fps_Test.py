@@ -22,6 +22,7 @@ elif os.name =='posix':
     #cam = cv2.VideoCapture(0,cv2.CAP_GSTREAMER) # Linux
     #cam = cv2.VideoCapture('/dev/video0',cv2.CAP_V4L) 
     cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
+    cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     
     
 else:
