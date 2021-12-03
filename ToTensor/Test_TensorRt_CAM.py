@@ -15,9 +15,9 @@ import tensorrt as trt
 import numpy as np
 import time
 
-model_dir ="./convert_Resnet50"
+model_dir ="./ToTensor/convert_Resnet50"
 labels_dir = model_dir+"/Model_Labels.txt"
-serialized_plan_fp32 = "resnet50.plan"
+serialized_plan_fp32 = model_dir+"/resnet50.plan"
 HEIGHT = 224
 WIDTH = 224
 variablesTensor = trt.float32
