@@ -19,10 +19,15 @@ print("Generar Objeto de la camara")
 if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
 elif os.name =='posix':
-    #cam = cv2.VideoCapture(0,cv2.CAP_GSTREAMER) # Linux
+    #cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    #cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    #cam.set(cv2.CAP_PROP_FRAME_WIDTH,640)
+    #cam.set(cv2.CAP_PROP_FRAME_HEIGHT,480) 
+
+
     #cam = cv2.VideoCapture('/dev/video0',cv2.CAP_V4L) 
-    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
-    cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink drop=true sync=false',cv2.CAP_GSTREAMER)
+    cv2.namedWindow('YoloV4 Output', cv2.WINDOW_AUTOSIZE)
     
     
 else:
@@ -40,6 +45,7 @@ fontColor              = (255,255,255)
 lineThickness          = 1
 
 time_array=np.array(0)
+time.sleep(2)
 while True:
     try:
         Camera_start_time=time.time()
@@ -61,7 +67,7 @@ while True:
         
         time_array=np.append(time_array,camera_end_time*1000)
         
-        print('Tiempo de toma de imagen: {:.2f}'.format(camera_end_time*1000))
+        #print('Tiempo de toma de imagen: {:.2f}'.format(camera_end_time*1000))
 
         
         image_text='Tasa de FPS: {:.2f}'.format(1/camera_end_time)
@@ -73,6 +79,7 @@ while True:
                     fontColor,
                     lineThickness)
         
+        print(cam.get(cv2.CAP_PROP_POS_FRAMES))
         cv2.imshow('YoloV4 Output',image)
         k=cv2.waitKey(1)
         
@@ -91,7 +98,10 @@ while True:
 cam.release()
 cv2.destroyAllWindows()
 
-
+##  
+print("##############################")
+print(time_array)
+print("##############################")
 ##  Plot de los tiempos de ejecucion
 plt.plot(time_array[2:time_array.size])
 

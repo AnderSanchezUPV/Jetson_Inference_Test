@@ -64,10 +64,11 @@ print("Generar Objeto de la camara")
 if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
 elif os.name =='posix':
-    cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
-    cam.set(cv2.CV_CAP_PROP_BUFFERSIZE, 1)
+    #cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    #cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     #cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
-    #cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
+    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink drop=true sync=false',cv2.CAP_GSTREAMER)
+    
 else:
     print("Error al crear objeto de la camara")  
     
@@ -95,9 +96,9 @@ output_names = list(map(lambda output: output.name, outputs))
 input_name = sess.get_inputs()[0].name
 
 ##  Dummy Inference
-_dummyImg=np.zeros((416,416,3),dtype=np.float32)
-_dummyImg=np.expand_dims(_dummyImg,0)
-sess.run(output_names, {input_name: _dummyImg})
+#_dummyImg=np.zeros((416,416,3),dtype=np.float32)
+#_dummyImg=np.expand_dims(_dummyImg,0)
+#_dummydetections=sess.run(output_names, {input_name: _dummyImg})
 
 print("Lazo principal")
 print("####################################")
