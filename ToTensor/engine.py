@@ -19,11 +19,11 @@ def build_engine(onnx_path, shape=[1, 224, 224, 3]):
             builder.create_network(1) as network, \
             builder.create_builder_config() as config, \
             trt.OnnxParser(network, TRT_LOGGER) as parser:
-        config.max_workspace_size = 256 << 20
+        config.max_workspace_size = 512 << 20
         builder.max_batch_size = 1
  #Flags para la optimizacion
         config.set_flag(trt.BuilderFlag.FP16) #Optimizacion de tamano
-        #config.set_flag(trt.BuilderFlag.SPARSE_WEIGHTS)#Allow the builder to examine weights and use optimized functions when weights have suitable sparsity
+        config.set_flag(trt.BuilderFlag.SPARSE_WEIGHTS)#Allow the builder to examine weights and use optimized functions when weights have suitable sparsity
 
         #config.set_flag(trt.BuilderFlag.DISABLE_TIMING_CACHE)
         with open(onnx_path, 'rb') as model:
