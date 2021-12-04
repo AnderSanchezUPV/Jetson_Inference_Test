@@ -78,12 +78,13 @@ else:
 
 ## Propiedades del texto en pantalla
 font                   = cv2.FONT_HERSHEY_SIMPLEX
-bottomLeftCornerOfText = (2,475)
-fontScale              =  0.4 
+bottomLeftCornerOfText_1 = (2,475)
+bottomLeftCornerOfText_2 = (2,445)
+bottomLeftCornerOfText_3 = (2,415)
+fontScale              =  0.7 
 fontColor              = (255,255,255)
 lineThickness          = 1
 
-##  Loop toma imagen
 idx=1;
 current_tic=time.time()
 ##  Definir Modelo neuronal
@@ -126,12 +127,26 @@ while not(stop):
         
         ex_time=current_tic-previous_tic;
         # image_text='FPS: {}'.format(1/ex_time)
-        image_text='Prediction--> {}; Ciclos por segundo: {:.2f} Tiempo de Inferencia: {:.4f}'.format(
-                    Img_net_labels[prediction],1/ex_time,inference_time)
-        # print('Tiempo de ejecucion: {}'.format(1/ex_time))                                               
-        # ts=time.time()-ti;
-        img=cv2.putText(img,image_text,
-                    bottomLeftCornerOfText, 
+        image_text_1='Prediction--> {}'.format(Img_net_labels[prediction])
+        image_text_2='Ciclos por segundo: {:.2f}'.format(1/ex_time)    
+        image_text_3='Tiempo de Inferencia: {:.4f}'.format(inference_time)  
+
+        #   Generar Imagen con texto en Pantalla                                           
+        
+        img=cv2.putText(img,image_text_1,
+                    bottomLeftCornerOfText_1, 
+                    font, 
+                    fontScale,
+                    fontColor,
+                    lineThickness)
+        img=cv2.putText(img,image_text_2,
+                    bottomLeftCornerOfText_2, 
+                    font, 
+                    fontScale,
+                    fontColor,
+                    lineThickness)
+        img=cv2.putText(img,image_text_3,
+                    bottomLeftCornerOfText_3, 
                     font, 
                     fontScale,
                     fontColor,
