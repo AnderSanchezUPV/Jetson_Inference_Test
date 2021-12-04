@@ -1,5 +1,5 @@
 ###########################################################################################
-####                                 GoogleNet en TensorRT				###
+####                                 ResNet50 en TensorRT				###
 ###########################################################################################
 
 # Autor: Ander Sanchez
@@ -15,6 +15,7 @@ import tensorrt as trt
 import numpy as np
 import time
 
+################################# Variables GLobales ######################################
 model_dir ="./ToTensor/convert_Resnet50"
 labels_dir = model_dir+"/Model_Labels.txt"
 serialized_plan_fp32 = model_dir+"/resnet50.plan"
@@ -47,65 +48,100 @@ def Google2Human():
 	return mensaje
 
 
-
-
-#Sacar las labels
+##	Sacar las labels
 Labels = Google2Human()
-# Preparar la cámara
+
+##	Preparar la cámara
 #vid = cv2.VideoCapture(0,cv2.CAP_V4L)
 vid = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
+
+
+## Propiedades del texto en pantalla
+font                   = cv2.FONT_HERSHEY_SIMPLEX
+bottomLeftCornerOfText_1 = (2,475)
+bottomLeftCornerOfText_2 = (2,445)
+bottomLeftCornerOfText_3 = (2,415)
+fontScale              =  0.7 
+fontColor              = (255,255,255)
+lineThickness          = 1
+
 # used to record the time when we processed last frame
 prev_frame_time = 0
 # used to record the time at which we processed current frame
 new_frame_time = 0
-print("Parada 1")
+
+##	Cargar Modelo en formato .plan
 engine = eng.load_engine(trt_runtime, serialized_plan_fp32)
-print("Parada 2")
+
 h_input, d_input, h_output, d_output, stream = inf.allocate_buffers(engine, 1, variablesTensor)
-
+current_tic=time.time()
 while(True):
+	try:
+		# Capture the video frame
+		# by frame
+		previous_tic=current_tic
+		current_tic=time.time()
 
-	# Capture the video frame
-	# by frame
-	prev_frame_time = time.time()
-	ret, frame = vid.read()
-	im = Cam2NetImage(frame,HEIGHT,WIDTH)
-	
-	out = inf.do_inference(engine, im, h_input, d_input, h_output, d_output, stream, 1,HEIGHT, WIDTH)
-	salida = out[0]
-	print(salida)
-	#print(Labels[int(out[0])])
-	# font which we will be using to display FPS
-	font = cv2.FONT_HERSHEY_SIMPLEX
-	# time when we finish processing for this frame
-	new_frame_time = time.time()
+		cv_flag, frame = vid.read()
+		if not(cv_flag):  
+			print('Error al capturar imagen')
+			break
 
-	# Calculating the fps
+		# Preprocesar Imagen
 
-	# fps will be number of frame processed in given time frame
-	# since their will be most of time error of 0.001 second
-	# we will be subtracting it to get more accurate result
-	fps = 1/(new_frame_time-prev_frame_time)
-	prev_frame_time = new_frame_time
+		im = Cam2NetImage(frame,HEIGHT,WIDTH)
 
-	# converting the fps into integer
-	fps = int(fps)
+		# Inferencia
+		inference_start=time.time()		
+		out = inf.do_inference(engine, im, h_input, d_input, h_output, d_output, stream, 1,HEIGHT, WIDTH)
+		salida = out[0]
+		salida = salida[0]
+		inference_time=time.time()-inference_start
 
-	# converting the fps to string so that we can display it on frame
-	# by using putText function
-	fps = str(fps)
-	# putting the FPS count on the frame
-	cv2.putText(frame, fps, (7, 70), font, 3, (100, 255, 0), 3, cv2.LINE_AA)
-	
-	# Display the resulting frame
-	cv2.imshow('frame', frame)
-	print(fps)
-	
-	# the 'q' button is set as the
-	# quitting button you may use any
-	# desired button of your choice
-	if cv2.waitKey(1) & 0xFF == ord('q'):
-		break
+ 		#   Definir texto en pantalla
+        
+		ex_time=current_tic-previous_tic
+        # image_text='FPS: {}'.format(1/ex_time)
+		image_text_1='Prediction--> {}'.format(Labels[salida])
+		image_text_2='Ciclos por segundo: {:.2f}'.format(1/ex_time)    
+		image_text_3='Tiempo de Inferencia: {:.4f}'.format(inference_time)  
+
+        #   Generar Imagen con texto en Pantalla                                           
+        
+		img=cv2.putText(frame,image_text_1,
+                    bottomLeftCornerOfText_1, 
+                    font, 
+                    fontScale,
+                    fontColor,
+                    lineThickness)
+		img=cv2.putText(img,image_text_2,
+                    bottomLeftCornerOfText_2, 
+                    font, 
+                    fontScale,
+                    fontColor,
+                    lineThickness)
+		img=cv2.putText(img,image_text_3,
+                    bottomLeftCornerOfText_3, 
+                    font, 
+                    fontScale,
+                    fontColor,
+                    lineThickness)		
+		
+		# Display the resulting frame
+		cv2.imshow('cam-test',img)
+		#print(fps)
+		
+		# the 'q' button is set as the
+		# quitting button you may use any
+		# desired button of your choice
+		if cv2.waitKey(1) & 0xFF == 32:
+			break
+
+	except: # En caso de fallo cerrar conexion a webcam y ventanas
+			print('Error en loop principal')
+			vid.release()
+			cv2.destroyAllWindows()			
+			break	
 
 # After the loop release the cap object
 vid.release()
