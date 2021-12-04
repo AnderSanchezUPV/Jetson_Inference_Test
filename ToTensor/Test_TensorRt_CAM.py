@@ -103,8 +103,8 @@ while(True):
 		ex_time=current_tic-previous_tic
         # image_text='FPS: {}'.format(1/ex_time)
 		image_text_1='Prediction--> {}'.format(Labels[salida])
-		image_text_2='Ciclos por segundo: {:.2f}'.format(1/ex_time)    
-		image_text_3='Tiempo de Inferencia: {:.4f}'.format(inference_time)  
+		image_text_2='Tiempo de Ejecucion: {:.2f}'.format(ex_time*1000)    
+		image_text_3='Tiempo de Inferencia: {:.4f} ms'.format(inference_time*1000)  
 
         #   Generar Imagen con texto en Pantalla                                           
         
