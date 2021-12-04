@@ -104,7 +104,7 @@ while not(stop):
             print('Error al capturar imagen')
             break
         # Preprocesar imagen
-        preprocessing_start=time.time();            
+        preprocessing_start=time.time()            
         img_net=preprocess_pil(Image.fromarray(img))        
         #img_net=preprocess(to_tensor(img))       
  
@@ -115,17 +115,17 @@ while not(stop):
         
         # Inferencia
         
-        inference_start=time.time();
+        inference_start=time.time()
         ort_inputs = {ort_session.get_inputs()[0].name: to_numpy(img_net)}
         ort_outs = ort_session.run(None, ort_inputs)
         prediction=np.argmax(ort_outs[0])
-        inference_time=time.time()-inference_start;
+        inference_time=time.time()-inference_start
         
         # print('Tiempo de inferencia: {}'.format(inference_time))
         
         #   Definir texto en pantalla
         
-        ex_time=current_tic-previous_tic;
+        ex_time=current_tic-previous_tic
         # image_text='FPS: {}'.format(1/ex_time)
         image_text_1='Prediction--> {}'.format(Img_net_labels[prediction])
         image_text_2='Ciclos por segundo: {:.2f}'.format(1/ex_time)    
