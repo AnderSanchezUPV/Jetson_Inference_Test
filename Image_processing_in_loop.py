@@ -71,7 +71,7 @@ if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
 elif os.name =='posix':
     #cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
-    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER) # Jetson
+    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink drop=true sync=false',cv2.CAP_GSTREAMER) # Jetson
     
 else:
     print("Error al crear objeto de la camara")  
