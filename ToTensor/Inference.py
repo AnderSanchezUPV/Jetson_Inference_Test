@@ -71,7 +71,7 @@ def do_inference(engine, pics_1, h_input_1, d_input_1, h_output, d_output, strea
        cuda.memcpy_dtoh_async(h_output, d_output, stream)
        # Synchronize the stream
        stream.synchronize()
-       # Return the host output.
-       out1 = np.amax(h_output)#.reshape((batch_size,-1, height, width))
-       out = np.where(h_output == np.amax(h_output))
-       return out 
+       # Return output.
+       # La salida de la funcion es la propia salida del modelo
+       # Todo el postprocesado de la salida se realiza externamente       
+       return h_output 

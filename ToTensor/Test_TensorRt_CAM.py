@@ -94,15 +94,15 @@ while(True):
 		# Inferencia
 		inference_start=time.time()		
 		out = inf.do_inference(engine, im, h_input, d_input, h_output, d_output, stream, 1,HEIGHT, WIDTH)
-		salida = out[0]
-		salida = salida[0]
 		inference_time=time.time()-inference_start
 
- 		#   Definir texto en pantalla
-        
+		# Post Procesar Salida
+		prediction = np.argmax(out)
+
+ 		#   Definir texto en pantalla        
 		ex_time=current_tic-previous_tic
         # image_text='FPS: {}'.format(1/ex_time)
-		image_text_1='Prediction--> {}'.format(Labels[salida])
+		image_text_1='Prediction--> {}'.format(Labels[prediction])
 		image_text_2='Tiempo de Ejecucion: {:.2f}'.format(ex_time*1000)    
 		image_text_3='Tiempo de Inferencia: {:.4f} ms'.format(inference_time*1000)  
 
