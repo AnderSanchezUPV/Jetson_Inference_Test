@@ -40,7 +40,7 @@ else:
 ## Propiedades del texto en pantalla
 font                   = cv2.FONT_HERSHEY_SIMPLEX
 bottomLeftCornerOfText = (2,475)
-fontScale              =  0.4 
+fontScale              =  0.7 
 fontColor              = (255,255,255)
 lineThickness          = 1
 
