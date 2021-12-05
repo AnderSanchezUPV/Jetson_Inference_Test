@@ -18,13 +18,15 @@ Se muestra por pantalla la clase mas relevante detectada por la red.
 import os
 import cv2 
 import time
-import torch
+# import torch
 import torchvision.transforms as transforms
-from torchvision.transforms.functional import to_tensor
+# from torchvision.transforms.functional import to_tensor
 import onnx
 import onnxruntime as ort
 import numpy as np
 from PIL import Image
+
+import matplotlib.pyplot as plt
 
 
 
@@ -32,16 +34,17 @@ from PIL import Image
 def to_numpy(tensor):
     return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
 
-def preprocess(img):    
-    sq_transformsFc= torch.nn.Sequential(
-        transforms.Resize([224, 224]),
-        transforms.CenterCrop(224),
-        # transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])        
-        )
+# def preprocess(img):    
+#     sq_transformsFc= torch.nn.Sequential(
+#         transforms.Resize([224, 224]),
+#         transforms.CenterCrop(224),
+#         # transforms.ToTensor(),
+#         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])        
+#         )
     
-    img=sq_transformsFc(img)
-    return (img)
+#     img=sq_transformsFc(img)
+#     return (img)
+    
 
 # scripted_process= torch.jit.script(transforms)
 
@@ -85,13 +88,16 @@ fontScale              =  0.7
 fontColor              = (255,255,255)
 lineThickness          = 1
 
-idx=1;
-current_tic=time.time()
+
+
 ##  Definir Modelo neuronal
 #ort_session = ort.InferenceSession("Modelos/resnet50v2/resnet50-v2-7.onnx",
 #                                      providers=["CPUExecutionProvider"])
 ort_session = ort.InferenceSession("Modelos/resnet50v2/resnet50-v2-7.onnx",
                                        providers=["CUDAExecutionProvider"])
+
+current_tic=time.time()
+time_array=np.array(0)
 ## Main loop
 print('Main Loop')
 while not(stop):   
@@ -118,15 +124,16 @@ while not(stop):
         inference_start=time.time()
         ort_inputs = {ort_session.get_inputs()[0].name: to_numpy(img_net)}
         ort_outs = ort_session.run(None, ort_inputs)
-        prediction=np.argmax(ort_outs[0])
         inference_time=time.time()-inference_start
-        
-        # print('Tiempo de inferencia: {}'.format(inference_time))
-        
-        #   Definir texto en pantalla
+
+        # Postprocesado
+        prediction=np.argmax(ort_outs[0])        
         
         ex_time=current_tic-previous_tic
-        # image_text='FPS: {}'.format(1/ex_time)
+        time_array=np.append(time_array,inference_time*1000)
+
+        #   Definir texto en pantalla               
+        
         image_text_1='Prediction--> {}'.format(Img_net_labels[prediction])
         image_text_2='Tiempo de Ejecucion: {:.2f}'.format(ex_time*1000)    
         image_text_3='Tiempo de Inferencia: {:.4f} ms'.format(inference_time*1000)    
@@ -173,6 +180,10 @@ while not(stop):
 ## Al finalizar el programa cerrar conexion a webcam y ventanas
 cam.release()
 cv2.destroyAllWindows()
+
+# Mostrar tiempos de Ejecucion
+plt.plot(time_array[2:time_array.size])
+plt.show()
 
 
 

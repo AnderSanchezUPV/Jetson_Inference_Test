@@ -15,6 +15,8 @@ import tensorrt as trt
 import numpy as np
 import time
 
+import matplotlib.pyplot as plt
+
 ################################# Variables GLobales ######################################
 model_dir ="./ToTensor/convert_Resnet50"
 labels_dir = model_dir+"/Model_Labels.txt"
@@ -72,8 +74,10 @@ new_frame_time = 0
 
 ##	Cargar Modelo en formato .plan
 engine = eng.load_engine(trt_runtime, serialized_plan_fp32)
-
 h_input, d_input, h_output, d_output, stream = inf.allocate_buffers(engine, 1, variablesTensor)
+
+time_array=np.array(0)
+##	Main Loop
 current_tic=time.time()
 while(True):
 	try:
@@ -101,6 +105,8 @@ while(True):
 
  		#   Definir texto en pantalla        
 		ex_time=current_tic-previous_tic
+		time_array=np.append(time_array,inference_time*1000)
+
         # image_text='FPS: {}'.format(1/ex_time)
 		image_text_1='Prediction--> {}'.format(Labels[prediction])
 		image_text_2='Tiempo de Ejecucion: {:.2f}'.format(ex_time*1000)    
@@ -148,5 +154,8 @@ vid.release()
 # Destroy all the windows
 cv2.destroyAllWindows()
 
+# Mostrar tiempos de Ejecucion
+plt.plot(time_array[2:time_array.size])
+plt.show()
 
 
