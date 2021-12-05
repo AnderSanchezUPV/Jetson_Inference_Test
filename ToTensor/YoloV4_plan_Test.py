@@ -20,7 +20,7 @@ import engine as eng
 import Inference as inf
 import tensorrt as trt 
 
-from YoloV4_postprocess_func import *
+from  YoloV4_postprocess_func import *
 
 
 
@@ -77,7 +77,7 @@ lineThickness          = 1
 ##  Definir parametros de la Inferencia
 print("Definir modelo y entorno de ejecucion")
 model_dir ="./ToTensor/convert_YoloV4"
-serialized_plan_fp32 = model_dir+"/resnet50.plan"
+serialized_plan_fp32 = model_dir+"/YoloV4.plan"
 HEIGHT = 416
 WIDTH = 416
 variablesTensor = trt.float32
@@ -124,7 +124,7 @@ while True:
         ##  Inferencia    
         #print("Inferencia")
         Inference_start=time.time()
-                
+        out = inf.do_inference(engine, image_data, h_input, d_input, h_output, d_output, stream, 1,HEIGHT, WIDTH)        
         # detections = sess.run(output_names, {input_name: image_data})
         #print("Output shape:", list(map(lambda detection: detection.shape, detections)))
         Inference_end=time.time()-Inference_start

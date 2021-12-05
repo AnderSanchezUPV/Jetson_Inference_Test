@@ -19,7 +19,7 @@ def build_engine(onnx_path, shape=[1, 224, 224, 3]):
             builder.create_network(1) as network, \
             builder.create_builder_config() as config, \
             trt.OnnxParser(network, TRT_LOGGER) as parser:
-        config.max_workspace_size = 512 << 20
+        config.max_workspace_size = 1024 << 20
         builder.max_batch_size = 1
  #Flags para la optimizacion
         config.set_flag(trt.BuilderFlag.FP16) #Optimizacion de tamano
