@@ -61,10 +61,8 @@ while True:
         camera_end_time =time.time()-Camera_start_time;
 
         
-        time.sleep(0.005)
-        
-        camera_end_time =time.time()-Camera_start_time-0.005;
-        
+        #time.sleep(0.005)        
+               
         time_array=np.append(time_array,camera_end_time*1000)
         
         #print('Tiempo de toma de imagen: {:.2f}'.format(camera_end_time*1000))
@@ -79,7 +77,7 @@ while True:
                     fontColor,
                     lineThickness)
         
-        print(cam.get(cv2.CAP_PROP_POS_FRAMES))
+        #print(cam.get(cv2.CAP_PROP_POS_FRAMES))
         cv2.imshow('YoloV4 Output',image)
         k=cv2.waitKey(1)
         
@@ -99,9 +97,9 @@ cam.release()
 cv2.destroyAllWindows()
 
 ##  
-print("##############################")
-print(time_array)
-print("##############################")
+# print("##############################")
+# print(time_array)
+# print("##############################")
 ##  Plot de los tiempos de ejecucion
 plt.plot(time_array[2:time_array.size])
 
