@@ -3,8 +3,8 @@ import argparse
 from onnx import ModelProto
 import tensorrt as trt 
 
-engine_name = "resnet50.plan"
-onnx_path = "/media/agv/agv_ssd/CoMAr/Jetson_Inference_Test/Modelos/resnet50v2/resnet50-v2-7.onnx"
+engine_name = "YoloV4.plan"
+onnx_path = "/media/agv/agv_ssd/CoMAr/Jetson_Inference_Test/Modelos/YoloV4/yolov4.onnx"
 batch_size = 1 
 		 
 model = ModelProto()
