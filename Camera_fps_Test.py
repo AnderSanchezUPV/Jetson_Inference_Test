@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 print("Generar Objeto de la camara")
 if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
+    cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 elif os.name =='posix':
     #cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
     #cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
@@ -48,7 +49,7 @@ time_array=np.array(0)
 time.sleep(2)
 while True:
     try:
-        Camera_start_time=time.time()
+        Camera_start_time=time.perf_counter()
         
         #Capturar imagen Desde camara 
         
@@ -58,7 +59,7 @@ while True:
             print('Fallo al leer la imagen ## cv_flag==False ##')
             break
 
-        camera_end_time =time.time()-Camera_start_time;
+        camera_end_time =time.perf_counter() - Camera_start_time 
 
         
         #time.sleep(0.005)        
@@ -97,9 +98,11 @@ cam.release()
 cv2.destroyAllWindows()
 
 ##  
-# print("##############################")
-# print(time_array)
-# print("##############################")
+print("##############################")
+print(time_array)
+print("##############################")
 ##  Plot de los tiempos de ejecucion
 plt.plot(time_array[2:time_array.size])
+plt.show()
+
 
