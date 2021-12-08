@@ -47,7 +47,10 @@ print("Generar Objeto de la camara")
 if os.name=='nt':
     cam = cv2.VideoCapture(0)   # Windows
 elif os.name =='posix':
-    cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    # cam = cv2.VideoCapture(0,cv2.CAP_V4L) # Linux
+    # cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink',cv2.CAP_GSTREAMER)
+    cam = cv2.VideoCapture('v4l2src device=/dev/video0 ! jpegdec ! videoconvert  ! video/x-raw, width=640, height=480 ! appsink drop=true sync=false',cv2.CAP_GSTREAMER)
+
 else:
     print("Error al crear objeto de la camara")  
 
@@ -60,6 +63,8 @@ ort_session = ort.InferenceSession(Model_path,
 
 #ort_session = ort.InferenceSession(Model_path,
 #                                    providers=["CPUExecutionProvider"])
+
+time_array=np.array(0)
 print("Lazo principal")
 print("####################################")
 while True:
@@ -109,6 +114,9 @@ while True:
         print("Mostrar Imagen")
         
         model_end=time.time()-model_start
+
+        time_array=np.append(time_array,model_end*1000)
+
         image_text='Tiempo de Ejecucion: {:.2f} ms  TIempo de inferencia: {:.2f} ms'.format(model_end*1000,inference_time*1000)
         
         blended_img=cv2.putText(blended_img,image_text,
@@ -136,3 +144,7 @@ while True:
 ##  Finalizarla Ejecucion del programa
 cam.release()
 cv2.destroyAllWindows()
+
+
+print('Valor medio {:.2f}'.format(np.mean(time_array[10:time_array.size])))
+print('Peor Caso: {:.2f}'.format(np.amax(time_array[10:time_array.size])))

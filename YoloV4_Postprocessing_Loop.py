@@ -100,6 +100,7 @@ input_name = sess.get_inputs()[0].name
 #_dummyImg=np.expand_dims(_dummyImg,0)
 #_dummydetections=sess.run(output_names, {input_name: _dummyImg})
 
+time_array=np.array(0)
 print("Lazo principal")
 print("####################################")
 while True:
@@ -147,7 +148,7 @@ while True:
         image = draw_bbox(original_image, bboxes)  
         
         model_end=time.time()-model_start
-
+        time_array=np.append(time_array,model_end*1000)
         #print("Tiempo de inferencia {:.4f} ms".format(model_end*1000))
         ##  Mostrar Resultado
         #print("Mostrar Imagen")
@@ -179,3 +180,6 @@ while True:
 ##  Finalizarla Ejecucion del programa
 cam.release()
 cv2.destroyAllWindows()
+
+print('Valor medio {:.2f}'.format(np.mean(time_array[10:time_array.size])))
+print('Peor Caso: {:.2f}'.format(np.amax(time_array[10:time_array.size])))

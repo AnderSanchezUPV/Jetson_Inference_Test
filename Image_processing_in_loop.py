@@ -182,8 +182,11 @@ cam.release()
 cv2.destroyAllWindows()
 
 # Mostrar tiempos de Ejecucion
-plt.plot(time_array[2:time_array.size])
+plt.plot(time_array[10:time_array.size])
 plt.show()
+print('Valor medio {:.2f}'.format(np.mean(time_array[10:time_array.size])))
+print('Peor Caso: {:.2f}'.format(np.amax(time_array[10:time_array.size])))
+
 
 
 
