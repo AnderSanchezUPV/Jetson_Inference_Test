@@ -181,5 +181,6 @@ while True:
 cam.release()
 cv2.destroyAllWindows()
 
-print('Valor medio {:.2f}'.format(np.mean(time_array[10:time_array.size])))
-print('Peor Caso: {:.2f}'.format(np.amax(time_array[10:time_array.size])))
+print('Valor medio {:.2f}'.format(np.mean(time_array)))
+print('Peor Caso: {:.2f}'.format(np.amax(time_array)))
+print('Tiempo total: {:.2f}'.format(np.sum(time_array)))

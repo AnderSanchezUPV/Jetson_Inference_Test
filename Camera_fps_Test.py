@@ -47,7 +47,7 @@ lineThickness          = 1
 
 time_array=np.array(0)
 time.sleep(2)
-while True:
+for i in range(11):
     try:
         Camera_start_time=time.perf_counter()
         
@@ -98,11 +98,11 @@ cam.release()
 cv2.destroyAllWindows()
 
 ##  
-print("##############################")
-print(time_array)
-print("##############################")
-##  Plot de los tiempos de ejecucion
-plt.plot(time_array[2:time_array.size])
-plt.show()
+# print("##############################")
+# print(time_array)
+# print("##############################")
+#  Plot de los tiempos de ejecucion
+#plt.plot(time_array[2:time_array.size])
+#plt.show()
 
 
