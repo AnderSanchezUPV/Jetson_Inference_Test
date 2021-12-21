@@ -8,4 +8,4 @@ __pycache__/
 repository_token
 
 # Aruco Markers
-images/ArucoFolder
+images/ArucoFolder/*
