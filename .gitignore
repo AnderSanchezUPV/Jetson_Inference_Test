@@ -6,3 +6,6 @@ __pycache__/
 
 # Private
 repository_token
+
+# Aruco Markers
+images/ArucoFolder
