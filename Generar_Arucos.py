@@ -12,5 +12,5 @@ Aruco_folder_path="images\ArucoFolder"
 for i in range(50):
     tag = np.zeros((300, 300, 1), dtype="uint8") ## Array de salida
     cv2.aruco.drawMarker(aruco_dict, i, 300, tag, 1)
-    aruco_name="Aruco_id_"+str(i)+".jpg"
+    aruco_name=Aruco_folder_path + "\Aruco_id_"+ str(i+1) + ".jpg"
     cv2.imwrite(aruco_name, tag)
