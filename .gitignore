@@ -9,3 +9,6 @@ repository_token
 
 # Aruco Markers
 images/ArucoFolder/
+
+# not onn x models
+Modelos/fromkeras
