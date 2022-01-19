@@ -1,7 +1,12 @@
+from cmath import sqrt
+from math import dist
 import cv2
 import numpy as np
 from PIL import Image
 
+def pixel_dist(point1,point2):
+    dist=np.sqrt((point1[0]-point2[0])**2+(point1[1]-point2[1])**2)
+    return dist
 #   Cargar Imagen
 
 img=Image.open('images/Aruco/índice.jpg').convert('L')
