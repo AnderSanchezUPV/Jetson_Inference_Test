@@ -4,8 +4,8 @@ import numpy as np
 
 
 #   Definir objeto de la camara
-cam = cv2.VideoCapture(0)   # Windows
-cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+cam = cv2.VideoCapture('v4l2src device=/dev/video2 ! jpegdec ! videoconvert  ! video/x-raw, width=1920, height=1080 ! appsink drop=true sync=false',cv2.CAP_GSTREAMER)# Ubuntu
+#cam.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
 
 
@@ -22,8 +22,11 @@ while True:
             print('Error al capturar imagen')
             break
         #   Procesar Imagen
+        #img=np.mean(img,-1)
+        img=cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(img, aruco_dict, 
                                         parameters=arucoParameters)
+        
 
         #   Dibujar marcadores Aruco
         frame = cv2.aruco.drawDetectedMarkers(img, corners)
