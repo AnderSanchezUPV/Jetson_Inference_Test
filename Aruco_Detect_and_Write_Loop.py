@@ -74,11 +74,11 @@ while True:
             break
 
         #   Grabar imagen en DIsco
-        #frame_name='Image_{}.jpg'.format(i)
-        #frame_path=os.path.join(full_path,frame_name)
+        frame_name='Image_{}.jpg'.format(i)
+        frame_path=os.path.join(full_path,frame_name)
 	
-        #cv2.imwrite(frame_path, frame) 
-        #i=i+1
+        cv2.imwrite(frame_path, frame) 
+        i=i+1
     except:
         print('Error en loop principal')
         cam.release()
