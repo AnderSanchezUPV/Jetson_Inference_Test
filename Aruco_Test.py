@@ -1,5 +1,3 @@
-from cmath import sqrt
-from math import dist
 import cv2
 import numpy as np
 import os
