@@ -17,7 +17,7 @@ os.mkdir(full_path)
 
 #   Cargar Imagen
 
-img=Image.open('images/Aruco/índice.jpg').convert('L')
+img=Image.open('images/Aruco/prueba.bmp')
 img=np.array(img)
 #   Definir propiedades de los Aruco
 aruco_dict=cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_1000)
