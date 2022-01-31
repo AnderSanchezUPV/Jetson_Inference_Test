@@ -12,10 +12,10 @@ aruco_dict=cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_1000)
 arucoParameters = cv2.aruco.DetectorParameters_create()
 
 #   Definir carpeta de origen y Crear carpeta en la que colocar las nuevas imagenes
-Path_Origen=r"C:\Users\ander\OneDrive\Proyectos UPV-EHU\Proyecto Mercedes\Imagenes CoMAr\2022_01_20_12_40_16_Filtradas"
+Path_Origen=r"C:\Users\ander\Documents\Imagenes CoMAr\2022_01_20_12_40_16_Filtradas"
 Path_Destino=Path_Origen+"_Etiquetas"
 
-os.mkdir(Path_Destino)
+if not os.path.exists(Path_Destino): os.mkdir(Path_Destino)
 
 
 for filename in os.listdir(Path_Origen):
@@ -25,7 +25,11 @@ for filename in os.listdir(Path_Origen):
     name, ext =os.path.splitext(filename)
     label_name=name+'.txt'
     f= open(os.path.join(Path_Destino,label_name),"w+")
-    f.write("{}".format(ids))
+    for i in range(ids.shape[0]):
+        x=corners[i][0][0][0]
+        y=corners[i][0][0][1]
+        id_ar=ids[i][0]
+        f.write("{},{},{}\n".format(int(x),int(y),id_ar))
        
         
     

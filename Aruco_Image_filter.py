@@ -15,8 +15,8 @@ arucoParameters = cv2.aruco.DetectorParameters_create()
 Path_Origen=r"C:\Users\ander\OneDrive\Proyectos UPV-EHU\Proyecto Mercedes\Imagenes CoMAr\2022_01_20_12_40_16"
 New_Path=Path_Origen+"_Filtradas"
 
-#   Crear carpeta de destino
-os.mkdir(New_Path)
+#   Crear carpeta de destino si no existe
+if not os.path.exists(New_Path): os.mkdir(New_Path)
 
 images = []
 i=1
