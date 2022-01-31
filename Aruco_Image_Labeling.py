@@ -28,8 +28,9 @@ for filename in os.listdir(Path_Origen):
     for i in range(ids.shape[0]):
         x=corners[i][0][0][0]
         y=corners[i][0][0][1]
+        theta=-1
         id_ar=ids[i][0]
-        f.write("{},{},{}\n".format(int(x),int(y),id_ar))
+        f.write("{},{},{},{}\n".format(int(x),int(y),theta,id_ar))
        
         
     
