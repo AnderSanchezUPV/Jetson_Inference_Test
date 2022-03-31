@@ -5,11 +5,6 @@ Created on Mon Nov 15 11:25:17 2021
 @author: ander
 https://github.com/onnx/models/blob/master/vision/object_detection_segmentation/yolov4/dependencies/inference.ipynb
 """
-## Limpiar el workspace y la consola
-from IPython import get_ipython
-get_ipython().magic('reset -sf')
-get_ipython().magic('clear')
-
 ##  Importar Librerias
 import numpy as np
 # from PIL import Image
