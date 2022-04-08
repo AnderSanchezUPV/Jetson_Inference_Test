@@ -49,12 +49,12 @@ def image_preprocess(image, target_size, gt_boxes=None):
 
 ##  Tomar Imagen
     #Desde archivo
-# original_image = cv2.imread("images/Yolo/kite.jpg")
-# original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
+original_image = cv2.imread("images/Yolo/kite.jpg")
+original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
 
     #Desde camara
-cam = cv2.VideoCapture(0)
-cv_flag ,original_image = cam.read() 
+#cam = cv2.VideoCapture(0)
+#cv_flag ,original_image = cam.read() 
    
 ##  Preprocesar Imagen
 input_size = 416
@@ -75,12 +75,15 @@ cv2.destroyAllWindows()
 Model_path="Modelos/YoloV4/yolov4.onnx"
 sess = ort.InferenceSession(Model_path,
                             providers=["CUDAExecutionProvider"])
-model_start=time.time()
+
 outputs = sess.get_outputs()
+
 output_names = list(map(lambda output: output.name, outputs))
 input_name = sess.get_inputs()[0].name
 
+model_start=time.time()
 detections = sess.run(output_names, {input_name: image_data})
+model_end=time.time()-model_start
 print("Output shape:", list(map(lambda detection: detection.shape, detections)))
 
 ##  PostProcesar Imagen
@@ -98,10 +101,10 @@ bboxes = postprocess_boxes(pred_bbox, original_image_size, input_size, 0.25)
 bboxes = nms(bboxes, 0.213, method='nms')
 image = draw_bbox(original_image, bboxes)
 
-model_end=time.time()-model_start
+
 print("Tiempo de inferencia {:.4f} ms".format(model_end*1000))
 ##  Mostrar Resultado
 cv2.imshow('YoloV4 Output',image)
 cv2.waitKey(0)
-cam.release()
+#cam.release()
 cv2.destroyAllWindows()

@@ -9,22 +9,20 @@ https://github.com/onnx/models/blob/master/vision/object_detection_segmentation/
 import numpy as np
 # from PIL import Image
 import time
-
 import cv2
 
 # import onnx
 import onnxruntime as ort
 # from onnx import numpy_helper
 
-
 ## Generar Imagenes
 Imagen=np.zeros((1,3,1024,1024),dtype=np.float32)
 Patron=np.zeros((1,3,224,224),dtype=np.float32)
 
 ##  Inferencia
-
 #Model_path="Modelos\Comar Models\CoMAr_CNN_V02.onnx"
-Model_path="Modelos\Comar Models\Vgg16byMatlab.onnx"
+#Model_path=r"Modelos\resnet18v2\resnet18_v1_7.onnx"
+Model_path=r"Modelos\Comar Models\resnet18_by_Matlab.onnx"
 
 #sess = ort.InferenceSession(Model_path,providers=["CPUExecutionProvider"])
 sess = ort.InferenceSession(Model_path,providers=["CUDAExecutionProvider"])
