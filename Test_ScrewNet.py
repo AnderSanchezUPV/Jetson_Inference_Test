@@ -9,7 +9,7 @@ Onnx Export Test
 
 ## Librerias
 import numpy as np
-import onnx
+# import onnx
 import onnxruntime as ort
 import time
 import cv2
@@ -17,11 +17,13 @@ import cv2
 
 ## Definir Arrays para emular imagenes.
 
-img=cv2.imread(r"images\Screws\0093.tiff")
-
+img=cv2.imread(r"images/Screws/0093.tiff",cv2.IMREAD_GRAYSCALE)
+img_copy=np.copy(img)
+img=np.expand_dims(img,0)
+img=np.expand_dims(img,0)
 ##  Cargar Modelo
 #Model_path=r"Modelos\Comar Models\CoMAr_CNN_V02.onnx"
-Model_path=r"Modelos\Comar_Models\Comar Models\ScrewNet.onnx"
+Model_path=r"Modelos/Comar_Models/Comar Models/ligthScrewNetV2.onnx"
 
 ##  Definir entorno de inferencia   
 
@@ -29,8 +31,7 @@ Model_path=r"Modelos\Comar_Models\Comar Models\ScrewNet.onnx"
 #   - Ejecutar en Grafica (CUDA) o en procesador
 #   - Para (CUDA), en caso de varias graficas, seleccionar el dispositivo de jecucion
 ort_session = ort.InferenceSession(Model_path, 
-                                    providers=["CUDAExecutionProvider"],
-                                    provider_options=[{"device_id": 0}])
+                                    providers=["CUDAExecutionProvider"])
 
 # ort_session = ort.InferenceSession(Model_path,
 #                                     providers=["CPUExecutionProvider"])
@@ -46,9 +47,9 @@ input_name0 = ort_session.get_inputs()[0].name
 ##  Inferencia
 
 #
-detections = ort_session.run(output_names, {input_name0: img}) 
+detections = ort_session.run(output_names, {input_name0: img.astype(np.float32)}) 
 
-drawed_img=cv2.circle(img,detections,50) 
+drawed_img=cv2.circle(img_copy,(detections[0][0][0],detections[0][0][1]),15,(255,0,0),5) 
 
 cv2.imshow('Screw Test',drawed_img)
 k=cv2.waitKey(0)             
