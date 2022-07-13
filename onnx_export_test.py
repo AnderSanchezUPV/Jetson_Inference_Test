@@ -19,10 +19,11 @@ Patron=np.zeros((1,1,80,80),dtype=np.float32)
 Imagen=np.zeros((1,1,512,612),dtype=np.float32)
 
 ##  Cargar Modelo
-Model_path=r"Modelos\Comar Models\ScrewNet2.onnx"
-
+#Model_path=r"Modelos\Comar Models\CoMAr_CNN_V02.onnx"
+Model_path=r"Modelos/Comar Models/ScrewNet.onnx"
 
 ##  Definir entorno de inferencia   
+
 #   - Path al modelo
 #   - Ejecutar en Grafica (CUDA) o en procesador
 #   - Para (CUDA), en caso de varias graficas, seleccionar el dispositivo de jecucion
